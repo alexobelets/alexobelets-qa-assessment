@@ -1,0 +1,18 @@
+[RPC]
+URL = "paste your RPC url" # Required
+
+[Account]
+Key = "paste your EOA (externally owned address) private key" # Required
+
+[Client]
+GasLimit = 6000000 # optional, defaults to 3000000
+WaitingTimeout = 300 # optional, defaults to 300 seconds
+
+[Contract]
+Mode = "demo" # deploy-contract, call-contract (requires Contract.Values), read-only-contract
+Address = "paste your GetterSetter deployed address"
+
+[Contract.Values] # optional, specify values to be set in contract
+uint256 = 0
+bytes32 = "Test"
+bytes = "Test"

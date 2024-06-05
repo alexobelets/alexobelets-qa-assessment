@@ -7,6 +7,15 @@
 *.dll
 *.so
 *.dylib
+*.idea
+/output
+
+# Dependencies
+/pkg
+/bin
+
+# Sensetive data/Secrets
+*config.toml
 
 # Test binary, built with `go test -c`
 *.test
