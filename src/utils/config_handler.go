@@ -40,7 +40,7 @@ func ValidateConfig(config config.Config) {
 	if !isValidMode(config.Contract.Mode) {
 		log.Fatal("config.toml: Contract.mode is required, acceptable values: ", DEMO_MODE, DEPLOY_MODE, CALL_MODE, READ_ONLY_MODE)
 	}
-	log.Printf("config.toml: Script will run in mode: '%s'", config.Contract.Mode)
+	log.Printf("config.toml: Application is running in mode (Contract.Mode): '%s'", config.Contract.Mode)
 	if config.Contract.Mode == "read-only-contract" {
 		hasContractAddress(config)
 	}
