@@ -3,8 +3,9 @@ bin
 output
 pkg
 
-# Ignore all .log files
+# Ignore files
 *.log
+.DS_Store
 
 # Ignore build directories at any level
 **/build
