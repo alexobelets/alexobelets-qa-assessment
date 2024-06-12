@@ -2,6 +2,7 @@ package config
 
 import "math/big"
 
+// Main configuration
 type Config struct {
 	RPC      RPC
 	Client   Client
@@ -13,11 +14,13 @@ type RPC struct {
 	Url string
 }
 
+// Client configuration
 type Client struct {
 	GasLimit       uint64
 	WaitingTimeout int
 }
 
+// Account/Wallet configuration
 type Account struct {
 	Key string
 }

@@ -142,8 +142,8 @@ qa-assessment/
 ## Recommendations and possible improvements
 
 - Extend app with CLI API to make the application more interactive
-- Add linting and code formatters
-- Add github actions
-- Add more unit testing
-- Add possibility to override the `config.toml` values with user-defined values (from Docker and CLI)
-- Transform raw bytes values returned in the response to the human-readable format
+- Add linting and code formatters to follow the recommended
+- Add (unit) testing
+- Add GitHub actions to run tests in CI/CD
+- Add possibility to override the `config.toml` values with user-defined values (for `docker run` and CLI)
+- Convert raw bytes values returned in the response to the human-readable format

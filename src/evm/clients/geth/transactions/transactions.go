@@ -39,6 +39,16 @@ func GetTransactionGasPrice(client *ethclient.Client) *big.Int {
 	return gasPrice
 }
 
+// WaitMined waits for a transaction to be mined.
+// If the transaction is not mined within the timeout, it will throw an error,
+// however, it does not revert or cancel the transaction.
+//
+// Parameters:
+// - client: Ethereum client instance.
+// - transaction: Transaction to be mined.
+// - timeout: Timeout duration, in seconds. Defines how long the function waits for the transaction to be mined.
+// Return:
+// - common.Address: Address of the deployed transaction.
 func WaitMined(client *ethclient.Client, transaction *types.Transaction, timeout int) *types.Receipt {
 	timeToWait := SetTimeToWait(timeout)
 	backgroundContext, cancel := context.WithTimeout(context.Background(), timeToWait)
@@ -57,7 +67,17 @@ func WaitMined(client *ethclient.Client, transaction *types.Transaction, timeout
 	return receipt
 }
 
-func WaitDeployed(err error, client *ethclient.Client, transaction *types.Transaction, timeout int) common.Address {
+// WaitDeployed waits for a transaction to be mined.
+// If the transaction is not mined within the timeout, it will throw an error,
+// however, it does not revert or cancel the transaction.
+//
+// Parameters:
+// - client: Ethereum client instance.
+// - transaction: Transaction to be mined.
+// - timeout: Timeout duration, in seconds. Defines how long the function waits for the transaction to be mined.
+// Return:
+// - common.Address: Address of the deployed transaction.
+func WaitDeployed(client *ethclient.Client, transaction *types.Transaction, timeout int) common.Address {
 	timeToWait := SetTimeToWait(timeout)
 	backgroundContext, cancel := context.WithTimeout(context.Background(), timeToWait)
 	defer cancel()

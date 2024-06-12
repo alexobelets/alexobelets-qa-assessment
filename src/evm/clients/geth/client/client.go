@@ -28,12 +28,13 @@ func DeployContract(auth *bind.TransactOpts, client *ethclient.Client, timeout i
 	}
 
 	log.Printf("Waiting for pending contract deployment with transaction hash: 0x%x, for contract address: 0x%x", transaction.Hash(), address)
-	deployedContractAddress := transactions.WaitDeployed(err, client, transaction, timeout)
+	deployedContractAddress := transactions.WaitDeployed(client, transaction, timeout)
 	log.Printf("Contract address: %s. Write it down for future (re-)usage.", deployedContractAddress)
 
 	return deployedContractAddress
 }
 
+// GetTransactor returns the transactor (signer) for the given private key
 func GetTransactor(privateKeyECDSA *ecdsa.PrivateKey, chainID *big.Int) *bind.TransactOpts {
 	auth, err := bind.NewKeyedTransactorWithChainID(privateKeyECDSA, chainID)
 	if err != nil {

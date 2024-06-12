@@ -16,6 +16,7 @@ import (
 	"math/big"
 )
 
+// Main values used by the application
 var (
 	tomlConfig           = utils.GetConfig()
 	rpcURL               = tomlConfig.RPC.Url
@@ -65,8 +66,18 @@ func Run() {
 	utils.JsonWriter(output, pathToJson)
 }
 
-// !!! Below are the steps/actions for runner that
+// !!! Below are the steps/actions for runner
 
+// ExecuteSetterGetterContractFunction executes functions to set values in the contract based on the provided input values.
+// If a value is not provided, the corresponding setter function will be gracefully skipped.
+//
+// Parameters
+// - values: configuration values for contract interaction (config.Values)
+// - deployerAddress: the address of the deployer (common.Address)
+// - privateKey: the private key for authentication (string)
+// - getterSetterContract: the contract instance for setting and getting values (*getter_setter.GetterSetter)
+// - ethClient: the Ethereum client for interaction (*ethclient.Client)
+// - timeout: the timeout duration for the contract interaction (int)
 func ExecuteSetterGetterContractFunction(values config.Values, deployerAddress common.Address, privateKey string, getterSetterContract *getter_setter.GetterSetter, ethClient *ethclient.Client, timeout int) {
 	getterSetterDto := SetGetterSetterDTO(values)
 
@@ -87,6 +98,14 @@ func ExecuteSetterGetterContractFunction(values config.Values, deployerAddress c
 	}
 }
 
+// ReadGetterSetterContract retrieves values from the contract, using its getters.
+//
+// Parameters:
+// - getterSetterContract: the contract instance for getting values (*getter_setter.GetterSetter)
+// - contractAddress: the address of the contract (string)
+// - deployerAddress: the address of the deployer (common.Address)
+// Return type:
+// - types.ContractGetterSetterInformation
 func ReadGetterSetterContract(getterSetterContract *getter_setter.GetterSetter, contractAddress string, deployerAddress common.Address) types.ContractGetterSetterInformation {
 	uintResponse, err := getterSetterContract.GetUint256(&bind.CallOpts{})
 	if err != nil {
@@ -144,6 +163,12 @@ func SetBytesInGetterSetterContract(getterSetterContract *getter_setter.GetterSe
 	transactions.WaitMined(ethClient, transaction, timeout)
 }
 
+// SetGetterSetterDTO creates a new DTO based on the provided values.
+//
+// Parameters:
+// - values: the values to be set in the contract (config.Values)
+// Returns:
+// - DTO
 func SetGetterSetterDTO(values config.Values) dto.EthereumDTO {
 	log.Printf("Creating DTO with values: Uint256: '%d', Bytes32: '%s', Bytes: '%s'", values.Uint256, values.Bytes32, values.Bytes)
 	getterSetterDto, err := dto.NewEthereumDTOBuilder().
@@ -158,6 +183,15 @@ func SetGetterSetterDTO(values config.Values) dto.EthereumDTO {
 	return getterSetterDto
 }
 
+// GetSigner retrieves latest account information and sets the signer options for a transaction,
+// including the chain ID, the nonce, gas price, and gas limit.
+//
+// Parameters:
+// - ethClient: the Ethereum client (*ethclient.Client)
+// - deployerAddress: the address of the deployer (common.Address)
+// - privateKey: the private key for authentication (string)
+// Returns:
+// - TransactOpts
 func GetSigner(ethClient *ethclient.Client, deployerAddress common.Address, privateKey string) *bind.TransactOpts {
 	log.Println("Getting signer options...")
 	chainID := transactions.GetChainId(ethClient)

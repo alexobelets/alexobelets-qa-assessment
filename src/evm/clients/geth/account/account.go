@@ -11,10 +11,19 @@ import (
 	"math/big"
 )
 
+// GetDeployerAddressFromPrivateKey returns the owner address from the EOA's private key
 func GetDeployerAddressFromPrivateKey(privateKey string) common.Address {
 	privateKeyECDSA := PrivateToECDSA(privateKey)
 	deployerAddress := GetOwnerAddress(GetEOAPublicKey(privateKeyECDSA))
 	return deployerAddress
+}
+
+func PrivateToECDSA(privateKey string) *ecdsa.PrivateKey {
+	privateKeyECDSA, err := crypto.HexToECDSA(privateKey)
+	if err != nil {
+		log.Fatal("Error converting private key to ECDSA: ", err)
+	}
+	return privateKeyECDSA
 }
 
 func GetEOAPublicKey(privateKeyECDSA *ecdsa.PrivateKey) *ecdsa.PublicKey {
@@ -27,20 +36,14 @@ func GetEOAPublicKey(privateKeyECDSA *ecdsa.PrivateKey) *ecdsa.PublicKey {
 	return publicKeyECDSA
 }
 
-func PrivateToECDSA(privateKey string) *ecdsa.PrivateKey {
-	privateKeyECDSA, err := crypto.HexToECDSA(privateKey)
-	if err != nil {
-		log.Fatal("Error converting private key to ECDSA: ", err)
-	}
-	return privateKeyECDSA
-}
-
 func GetOwnerAddress(publicKeyECDSA *ecdsa.PublicKey) common.Address {
 	deployerAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
 	log.Println("Owner address:", deployerAddress)
 	return deployerAddress
 }
 
+// ValidateBalanceFunded Checks if the account has a balance greater than 0
+// If not, it throws an error
 func ValidateBalanceFunded(deployerAddress common.Address, client *ethclient.Client) {
 	account := common.HexToAddress(deployerAddress.String())
 	balanceInWei, err := client.BalanceAt(context.Background(), account, nil)

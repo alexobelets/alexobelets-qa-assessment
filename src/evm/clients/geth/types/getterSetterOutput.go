@@ -2,6 +2,7 @@ package types
 
 import "math/big"
 
+// ContractGetterSetterInformation represents the scheme of the output for transaction
 type ContractGetterSetterInformation struct {
 	ContractAddress string   `json:"contractAddress"`
 	DeployerAddress string   `json:"deployerAddress"`

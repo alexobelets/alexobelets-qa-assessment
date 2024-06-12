@@ -13,6 +13,11 @@ const (
 	READ_ONLY_MODE = "read-only-contract"
 )
 
+// GetConfig retrieves the configuration settings from the "config.toml" file and validates the configuration.
+//
+// No parameters are needed.
+// Returns:
+// - config.Config struct containing the fetched configurations.
 func GetConfig() config.Config {
 	var fetchedConfig config.Config
 
@@ -25,6 +30,7 @@ func GetConfig() config.Config {
 	return fetchedConfig
 }
 
+// ValidateConfig validates each "config.toml" field.
 func ValidateConfig(config config.Config) {
 	if config.RPC.Url == "" {
 		log.Fatal("config.toml: RPC.URL is required")
@@ -32,6 +38,7 @@ func ValidateConfig(config config.Config) {
 	if config.Account.Key == "" {
 		log.Fatal("config.toml: Account.key is required")
 	}
+	// Check if the gas limit is valid, defaulting to 3000000 if not provided
 	if config.Client.GasLimit <= 0 {
 		defaultGasLimit := 3000000
 		log.Printf("config.toml: Client.gasLimit is 0 or less, defaulting to '%v'", defaultGasLimit)
@@ -59,6 +66,15 @@ func hasContractAddress(config config.Config) {
 	}
 }
 
+// isValidMode checks if the Contract.Mode is valid.
+//
+// Parameter:
+//
+//	mode - the mode name to be checked for validity
+//
+// Return:
+//
+//	bool - true if the mode is valid, false otherwise
 func isValidMode(mode string) bool {
 	// allowedModes contains the list of valid values'
 	var allowedModes = []string{DEMO_MODE, DEPLOY_MODE, CALL_MODE, READ_ONLY_MODE}
@@ -72,6 +88,10 @@ func isValidMode(mode string) bool {
 	return false
 }
 
+// hasValuesToSet checks if at least one of the values to set is present
+//
+// Parameter: config of type config.Config
+// Returns: bool
 func hasValuesToSet(config config.Config) bool {
 	// Check if at least one of the values to set in the contracts
 	// otherwise, it is pointless to call the existing contract without setting any of the values
